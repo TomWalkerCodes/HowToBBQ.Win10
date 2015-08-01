@@ -47,7 +47,7 @@ namespace HowToBBQ.Win10.Views
         {
             //load saved image
             StorageFolder pictureLibrary = KnownFolders.SavedPictures;
-            //filename = "ms-appdata:///local/Pictures/Test.jpeg";
+
             StorageFile savedPicture = await pictureLibrary.GetFileAsync(filename);
             ImageProperties imgProp = await savedPicture.Properties.GetImagePropertiesAsync();
             var savedPictureStream = await savedPicture.OpenAsync(FileAccessMode.Read);
@@ -67,7 +67,6 @@ namespace HowToBBQ.Win10.Views
             picker.FileTypeFilter.Add(".jpg");
             picker.FileTypeFilter.Add(".jpeg");
             picker.FileTypeFilter.Add(".png");
-
 
             StorageFile file = await picker.PickSingleFileAsync();
 

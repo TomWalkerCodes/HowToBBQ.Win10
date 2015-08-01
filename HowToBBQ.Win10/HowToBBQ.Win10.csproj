@@ -93,6 +93,7 @@
     <Content Include="ApplicationInsights.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <None Include="Assets\Store100x100Logo.pdn" />
     <None Include="project.json" />
   </ItemGroup>
   <ItemGroup>
@@ -138,23 +139,31 @@
     <Content Include="Assets\DryGlazedPorkTenderloin.jpg" />
     <Content Include="Assets\GrilledPorkChopsandZestySauceViergewithFeta.jpg" />
     <Content Include="Assets\KoreanBBQShortRibs.jpg" />
-    <Content Include="Assets\Logo.scale-100.png" />
-    <Content Include="Assets\SmallLogo.scale-100.png" />
     <Content Include="Assets\SplashScreen.scale-100.png" />
+    <Content Include="Assets\SplashScreen.scale-400.png" />
+    <Content Include="Assets\SplashScreen1240x600.scale-200.png" />
+    <Content Include="Assets\SplashScreen2480x1200.scale-400.png" />
+    <Content Include="Assets\SplashScreen620x300.scale-100.png" />
     <Content Include="Assets\Square150x150Logo.scale-100.png" />
+    <Content Include="Assets\Square150x150Logo.scale-400.png" />
+    <Content Include="Assets\Square176x1764Logo.scale-400.png" />
+    <Content Include="Assets\Square24x24Logo.png" />
+    <Content Include="Assets\Square300x300Logo.scale-200.png" />
+    <Content Include="Assets\Square44x44Logo.scale-400.png" />
+    <Content Include="Assets\Square600x600Logo.scale-400.png" />
+    <Content Include="Assets\Square88x88Logo.scale-200.png" />
     <Content Include="Assets\StLouisStylePorkRibs.jpg" />
+    <Content Include="Assets\Store100x100Logo.png" />
+    <Content Include="Assets\Store50x50Logo.png" />
     <Content Include="Assets\StoreLogo.scale-100.png" />
     <Content Include="Assets\StoreLogo.scale-200.png" />
+    <Content Include="Assets\StoreLogo.scale-400.png" />
     <Content Include="Assets\SurfNTurfKebabs.jpg" />
-    <Content Include="Assets\Wide310x150Logo.scale-100.png" />
-    <Content Include="Assets\WideLogo.scale-100.png" />
     <Content Include="Properties\Default.rd.xml" />
-    <Content Include="Assets\LockScreenLogo.scale-200.png" />
     <Content Include="Assets\SplashScreen.scale-200.png" />
     <Content Include="Assets\Square150x150Logo.scale-200.png" />
     <Content Include="Assets\Square44x44Logo.scale-200.png" />
     <Content Include="Assets\Square44x44Logo.targetsize-24_altform-unplated.png" />
-    <Content Include="Assets\Wide310x150Logo.scale-200.png" />
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="App.xaml">
