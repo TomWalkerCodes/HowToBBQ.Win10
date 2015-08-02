@@ -1,8 +1,6 @@
 ﻿using HowToBBQ.Win10.Models;
 using Mvvm;
 using System;
-using System.Windows.Input;
-using Windows.ApplicationModel;
 using Windows.ApplicationModel.DataTransfer;
 using Windows.Storage;
 using Windows.Storage.Streams;
@@ -242,7 +240,5 @@ namespace HowToBBQ.Win10.ViewModels
             args.Request.Data.SetBitmap(RandomAccessStreamReference.CreateFromFile(storageFile));
             deferral.Complete();
         }
-
-
     }
 }

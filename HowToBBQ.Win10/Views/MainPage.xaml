@@ -9,7 +9,40 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
 
-    <Grid>      
+    <Grid>
+
+        <VisualStateManager.VisualStateGroups>
+            <VisualStateGroup x:Name="WindowStates">
+                <VisualState x:Name="NarrowState">
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="1"/>
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <Setter Target="RecipesGridView.Visibility" Value="Collapsed" />
+                        <Setter Target="RecipesListView.Visibility" Value="Visible" />
+                    </VisualState.Setters>
+                </VisualState>
+                <VisualState x:Name="WideState">
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="1000"/>
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <Setter Target="RecipesGridView.Visibility" Value="Visible" />
+                        <Setter Target="RecipesListView.Visibility" Value="Collapsed" />
+                    </VisualState.Setters>
+                </VisualState>
+                <VisualState x:Name="MediumState">
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="660"/>
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <Setter Target="RecipesGridView.Visibility" Value="Collapsed" />
+                        <Setter Target="RecipesListView.Visibility" Value="Visible" />
+                    </VisualState.Setters>
+                </VisualState>
+            </VisualStateGroup>
+        </VisualStateManager.VisualStateGroups>
+        
         <GridView x:Name="RecipesGridView" ItemsSource="{Binding Recipes}" SelectionMode="Single" IsItemClickEnabled="True" Margin="40,20,30,0" HorizontalAlignment="Right">
             <interactivity:Interaction.Behaviors>
                 <core:EventTriggerBehavior EventName="ItemClick">
@@ -36,5 +69,37 @@
                 </DataTemplate>
             </GridView.ItemTemplate>
         </GridView>
+        <ListView x:Name="RecipesListView" 
+                  ItemsSource="{Binding Recipes}" 
+                  SelectionMode="Single" 
+                  IsItemClickEnabled="True" 
+                  Margin="40,20,30,0"
+                  HorizontalAlignment="Left" 
+                  VerticalAlignment="Center"
+                  Visibility="Collapsed">
+            <interactivity:Interaction.Behaviors>
+                <core:EventTriggerBehavior EventName="ItemClick">
+                    <core:CallMethodAction MethodName="BBQRecipeTapped"
+                            TargetObject="{Binding Mode=OneWay}" />
+                </core:EventTriggerBehavior>
+            </interactivity:Interaction.Behaviors>
+            <ListView.ItemContainerStyle>
+                <Style TargetType="ListViewItem">
+                    <Setter Property="Height" Value="Auto"/>
+                    <Setter Property="Margin" Value="20"/>
+                </Style>
+            </ListView.ItemContainerStyle>
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <Grid>
+                        <Image Source="{Binding ImageSource}"/>
+                        <Border Background="#99000000" VerticalAlignment="Bottom">
+                            <TextBlock Grid.Column="1" Text="{Binding Name}"
+                				FontSize="15" Margin="10" VerticalAlignment="Center"/>
+                        </Border>
+                    </Grid>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
     </Grid>
 </Page>
