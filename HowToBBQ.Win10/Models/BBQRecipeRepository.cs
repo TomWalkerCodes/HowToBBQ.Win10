@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace HowToBBQ.Win10.Models
 {
@@ -44,7 +41,9 @@ namespace HowToBBQ.Win10.Models
                 PrepTime = 0,
                 TotalTime = 0,
 
-                ImageSource = "ms-appx:///Assets/DryGlazedPorkTenderloin.jpg"
+                ImagePath = "ms-appx:///Assets/DryGlazedPorkTenderloin.jpg"
+
+
 
 
             });
@@ -73,7 +72,7 @@ namespace HowToBBQ.Win10.Models
                 PrepTime = 10,
                 TotalTime = 22,
                 Serves = 4,
-                ImageSource = "ms-appx:///Assets/GrilledPorkChopsandZestySauceViergewithFeta.jpg"
+                ImagePath = "ms-appx:///Assets/GrilledPorkChopsandZestySauceViergewithFeta.jpg"
 
             });
 
@@ -99,7 +98,7 @@ namespace HowToBBQ.Win10.Models
                 PrepTime = 15,
                 TotalTime = 255,
                 Serves = 6,
-                ImageSource = "ms-appx:///Assets/StLouisStylePorkRibs.jpg"
+                ImagePath = "ms-appx:///Assets/StLouisStylePorkRibs.jpg"
             });
 
             Add(new BBQRecipe
@@ -121,7 +120,7 @@ namespace HowToBBQ.Win10.Models
                 PrepTime = 0,
                 TotalTime = 0,
                 Serves = 2,
-                ImageSource = "ms-appx:///Assets/BBQveg.jpg"
+                ImagePath = "ms-appx:///Assets/BBQveg.jpg"
             });
 
             Add(new BBQRecipe
@@ -145,7 +144,7 @@ namespace HowToBBQ.Win10.Models
                 PrepTime = 0,
                 TotalTime = 0,
                 Serves = 6,
-                ImageSource = "ms-appx:///Assets/BuffaloBurgerwithOkaCheese.jpg"
+                ImagePath = "ms-appx:///Assets/BuffaloBurgerwithOkaCheese.jpg"
             });
 
             Add(new BBQRecipe
@@ -173,7 +172,7 @@ namespace HowToBBQ.Win10.Models
                 PrepTime = 0,
                 TotalTime = 0,
                 Serves = 6,
-                ImageSource = "ms-appx:///Assets/SurfNTurfKebabs.jpg"
+                ImagePath = "ms-appx:///Assets/SurfNTurfKebabs.jpg"
             });
 
             Add(new BBQRecipe
@@ -200,7 +199,7 @@ namespace HowToBBQ.Win10.Models
                 PrepTime = 0,
                 TotalTime = 0,
                 Serves = 6,
-                ImageSource = "ms-appx:///Assets/SurfNTurfKebabs.jpg"
+                ImagePath = "ms-appx:///Assets/SurfNTurfKebabs.jpg"
             });
 
              Add(new BBQRecipe
@@ -218,7 +217,7 @@ namespace HowToBBQ.Win10.Models
                 PrepTime = 0,
                 TotalTime = 0,
                 Serves = 10,
-                ImageSource = "ms-appx:///Assets/BBQPulledPorkSandwiches.jpg"
+                 ImagePath = "ms-appx:///Assets/BBQPulledPorkSandwiches.jpg"
              });
 
             Add(new BBQRecipe
@@ -253,7 +252,7 @@ namespace HowToBBQ.Win10.Models
                 PrepTime = 15,
                 TotalTime = 135,
                 Serves = 8,
-                ImageSource = "ms-appx:///Assets/BBQTurkeyDrumstickswithChipotleGlaze.jpg"
+                ImagePath = "ms-appx:///Assets/BBQTurkeyDrumstickswithChipotleGlaze.jpg"
             });
 
             Add(new BBQRecipe
@@ -276,7 +275,7 @@ namespace HowToBBQ.Win10.Models
                 TotalTime = 15,
                 Serves = 4,
 
-                ImageSource = "ms-appx:///Assets/KoreanBBQShortRibs.jpg"
+                ImagePath = "ms-appx:///Assets/KoreanBBQShortRibs.jpg"
             });
 
         }
@@ -287,12 +286,12 @@ namespace HowToBBQ.Win10.Models
             {
                 throw new ArgumentNullException("item");
             }
-            item.Id = _nextId++;
+            item.Id = Guid.NewGuid().ToString();
             bbqRecipes.Add(item);
             return item;
         }
 
-        public BBQRecipe Get(int id)
+        public BBQRecipe Get(string id)
         {
             return bbqRecipes.Find(p => p.Id == id);
         }
@@ -302,9 +301,12 @@ namespace HowToBBQ.Win10.Models
             return bbqRecipes;
         }
 
-        public void Remove(int id)
+        public void Remove(string id)
         {
             bbqRecipes.RemoveAll(p => p.Id == id);
+
+            App.MainViewModel.IsDataLoaded = false;
+            App.MainViewModel.SelectedBBQRecipe = new BBQRecipe();
         }
 
         public bool Update(BBQRecipe item)
@@ -323,6 +325,9 @@ namespace HowToBBQ.Win10.Models
 
             bbqRecipes.RemoveAt(index);
             bbqRecipes.Add(item);
+
+            App.MainViewModel.IsDataLoaded = false;
+
             return true;
         }
     }

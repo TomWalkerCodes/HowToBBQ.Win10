@@ -1,7 +1,6 @@
 ﻿using GalaSoft.MvvmLight.Ioc;
+using HowToBBQ.Win10.Common;
 using HowToBBQ.Win10.Models;
-using HowToBBQ.Win10.Mvvm;
-using Mvvm;
 using System.Collections.ObjectModel;
 using Windows.UI.Xaml.Controls;
 
@@ -10,8 +9,8 @@ namespace HowToBBQ.Win10.ViewModels
     public class MainViewModel : ViewModelBase
     {
         public ObservableCollection<BBQRecipe> Recipes { get; set; }
-        private INavigationService navigationService;
-        public IBBQRecipeRepository BBQRepo = new BBQRecipeRepository();
+        public INavigationService navigationService;
+        public IBBQRecipeRepository BBQRepo;
         private BBQRecipe selectedBBQRecipe;
 
         public BBQRecipe SelectedBBQRecipe
@@ -25,6 +24,9 @@ namespace HowToBBQ.Win10.ViewModels
 
         public MainViewModel()
         {
+            BBQRepo = new BBQRecipeRepository();
+            selectedBBQRecipe = new BBQRecipe();
+
             if (!IsDataLoaded)
             {
                 Recipes = BBQRepo.GetAll().ToObservableCollection();
@@ -47,5 +49,7 @@ namespace HowToBBQ.Win10.ViewModels
             Recipes = BBQRepo.GetAll().ToObservableCollection();
             IsDataLoaded = true;
         }
+
+     
     }
 }

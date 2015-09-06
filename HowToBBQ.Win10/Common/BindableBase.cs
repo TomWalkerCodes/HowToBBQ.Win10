@@ -1,9 +1,8 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
-using Windows.UI.Xaml.Data;
 
-namespace Mvvm
+namespace HowToBBQ.Win10.Common
 {
     /// <summary>
     /// Implementation of <see cref="INotifyPropertyChanged"/> to simplify models.
@@ -49,6 +48,16 @@ namespace Mvvm
             {
                 eventHandler(this, new PropertyChangedEventArgs(propertyName));
             }
+        }
+
+        /// <summary>
+        /// Notifies the UI that the property specified has changed.
+        /// </summary>
+        /// <param name="propertyName">Name of the property that has changed.</param>
+        public void NotifyPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            PropertyChangedEventHandler handler = PropertyChanged;
+            if (null != handler) handler(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }

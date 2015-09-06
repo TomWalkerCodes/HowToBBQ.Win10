@@ -1,7 +1,7 @@
 ﻿using System;
 using Windows.UI.Xaml.Navigation;
 
-namespace HowToBBQ.Win10.Mvvm
+namespace HowToBBQ.Win10.Common
 {
     public interface INavigationService
     {

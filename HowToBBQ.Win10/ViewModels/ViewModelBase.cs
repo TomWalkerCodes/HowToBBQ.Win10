@@ -1,4 +1,4 @@
-﻿using Mvvm;
+﻿using HowToBBQ.Win10.Common;
 using System.Collections.ObjectModel;
 
 namespace HowToBBQ.Win10.ViewModels

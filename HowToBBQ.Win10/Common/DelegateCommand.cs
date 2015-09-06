@@ -1,10 +1,10 @@
-﻿namespace Mvvm
+﻿using System;
+using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
+using System.Windows.Input;
+
+namespace HowToBBQ.Win10.Common
 {
-    using System;
-    using System.Diagnostics;
-    using System.Diagnostics.CodeAnalysis;
-    using System.Windows.Input;
-    using Windows.UI.Xaml.Input;
 
     public class DelegateCommand : ICommand
     {

@@ -8,8 +8,8 @@ namespace HowToBBQ.Win10.ViewModels
         {
             // Build the menu
             Menu.Clear();
-            Menu.Add(new MenuItem() { Glyph = "", Text = "BBQ Recipes", NavigationDestination = typeof(MainPage) });
-            Menu.Add(new MenuItem() { Glyph = "", Text = "Add Recipe", NavigationDestination = typeof(BBQRecipePage) });
+            Menu.Add(new MenuItem() { Glyph = "", Text = "Add Recipe", NavigationDestination = typeof(BBQRecipePage) });
+            Menu.Add(new MenuItem() { Glyph = "", Text = "BBQ Recipes", NavigationDestination = typeof(MainPage) });
             
         }
     }

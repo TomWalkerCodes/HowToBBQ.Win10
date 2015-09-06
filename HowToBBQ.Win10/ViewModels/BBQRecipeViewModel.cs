@@ -1,15 +1,21 @@
-﻿using HowToBBQ.Win10.Models;
-using Mvvm;
+﻿using HowToBBQ.Win10.Common;
+using HowToBBQ.Win10.Models;
 using System;
+using System.Threading.Tasks;
 using Windows.ApplicationModel.DataTransfer;
+using Windows.Foundation;
+using Windows.Media.Capture;
 using Windows.Storage;
+using Windows.Storage.FileProperties;
+using Windows.Storage.Pickers;
 using Windows.Storage.Streams;
+using Windows.UI.Popups;
+using Windows.UI.Xaml.Media.Imaging;
 
 namespace HowToBBQ.Win10.ViewModels
 {
-    public class BBQRecipeViewModel: ViewModelBase
+    public class BBQRecipeViewModel : ViewModelBase
     {
-        public BBQRecipe CurrentBBQRecipe { get; set; }
 
         public DelegateCommand SaveCommand { get; private set; }
 
@@ -17,39 +23,9 @@ namespace HowToBBQ.Win10.ViewModels
 
         public DelegateCommand ShareCommand { get; private set; }
 
-        private int id;
-        private string name;
-        private string shortDesc;
-        private string ingredients;
-        public string directions;
-        public int prepTime;
-        public int totalTime;
-        public int serves;
-        public string imageSource;
-        private StorageFile task;
 
         public BBQRecipeViewModel()
         {
-
-            if (App.MainViewModel.SelectedBBQRecipe != null)
-            {
-                CurrentBBQRecipe = App.MainViewModel.SelectedBBQRecipe;
-            }
-            else
-            {
-                CurrentBBQRecipe = new BBQRecipe();
-                CurrentBBQRecipe.Id = 0;
-            }
-
-            id = CurrentBBQRecipe.Id;
-            name = CurrentBBQRecipe.Name;
-            shortDesc = CurrentBBQRecipe.ShortDesc;
-            ingredients = CurrentBBQRecipe.Ingredients;
-            directions = CurrentBBQRecipe.Directions;
-            prepTime = CurrentBBQRecipe.PrepTime;
-            totalTime = CurrentBBQRecipe.TotalTime;
-            serves = CurrentBBQRecipe.Serves;
-            imageSource = CurrentBBQRecipe.ImageSource;
 
             SaveCommand = new DelegateCommand(SaveBBQRecipe);
             DeleteCommand = new DelegateCommand(DeleteBBQRecipe);
@@ -58,169 +34,107 @@ namespace HowToBBQ.Win10.ViewModels
             DataTransferManager dataTransferManager = DataTransferManager.GetForCurrentView();
             dataTransferManager.DataRequested += DataTransferManager_DataRequested;
 
-
         }
 
-        public int Id
+        #region Page Functions
+        private WriteableBitmap bitmap;
+
+        async Task<WriteableBitmap> SelectImageFromPicker()
         {
-            get
+            var picker = new FileOpenPicker();
+            picker.ViewMode = PickerViewMode.Thumbnail;
+            picker.SuggestedStartLocation = PickerLocationId.PicturesLibrary;
+            picker.FileTypeFilter.Add(".jpg");
+            picker.FileTypeFilter.Add(".jpeg");
+            picker.FileTypeFilter.Add(".png");
+
+            StorageFile file = await picker.PickSingleFileAsync();
+
+            if (file != null)
             {
-                return id;
+
+                ImageProperties imgProp = await file.Properties.GetImagePropertiesAsync();
+                var savedPictureStream = await file.OpenAsync(FileAccessMode.Read);
+
+                //set image properties and show the taken photo
+                bitmap = new WriteableBitmap((int)imgProp.Width, (int)imgProp.Height);
+                await bitmap.SetSourceAsync(savedPictureStream);
+                bitmap.Invalidate();
+
+                SaveImageAsync(file);
+
+                return bitmap;
             }
-            set
+            else return null;
+        }
+
+        private async void SaveImageAsync(StorageFile file)
+        {
+
+            if (file != null)
             {
-                SetProperty(ref id, value);
+                StorageFile newImageFile = await file.CopyAsync(ApplicationData.Current.LocalFolder, Guid.NewGuid().ToString());
+
+                App.MainViewModel.SelectedBBQRecipe.ImagePath = newImageFile.Path;
             }
         }
 
-        public string Name
+        async Task<WriteableBitmap> TakePicture()
         {
-            get
-            {
-                return name;
-            }
-            set
-            {
-                SetProperty(ref name, value);
-            }
-        }
+            CameraCaptureUI captureUI = new CameraCaptureUI();
+            captureUI.PhotoSettings.Format = CameraCaptureUIPhotoFormat.Jpeg;
+            captureUI.PhotoSettings.CroppedSizeInPixels = new Size(600, 600);
 
-        public string ShortDesc
-        {
-            get
-            {
-                return shortDesc;
-            }
-            set
-            {
-                SetProperty(ref shortDesc, value);
-            }
-        }
+            StorageFile photo = await captureUI.CaptureFileAsync(CameraCaptureUIMode.Photo);
 
-        public string Ingredients
-        {
-            get
+            if (photo != null)
             {
-                return ingredients;
-            }
-            set
-            {
-                SetProperty(ref ingredients, value);
-            }
-        }
 
-        public string Directions
-        {
-            get
-            {
-                return directions;
-            }
-            set
-            {
-                SetProperty(ref directions, value);
-            }
-        }
+                WriteableBitmap bitmap = new WriteableBitmap(600, 600);
+                IRandomAccessStream stream = await photo.OpenAsync(FileAccessMode.Read);
+                bitmap.SetSource(stream);
 
-        public int PrepTime
-        {
-            get
-            {
-                return prepTime;
-            }
-            set
-            {
-                SetProperty(ref prepTime, value);
-            }
-        }
+                SaveImageAsync(photo);
 
-        public int TotalTime
-        {
-            get
-            {
-                return totalTime;
+                return bitmap;
             }
-            set
-            {
-                SetProperty(ref totalTime, value);
-            }
-        }
 
-        public int Serves
-        {
-            get
-            {
-                return serves;
-            }
-            set
-            {
-                SetProperty(ref serves, value);
-            }
+            return null;
         }
-
-        public string ImageSource
+        public async Task<WriteableBitmap> SelectImage(bool useCamera)
         {
-            get
-            {
-                return imageSource;
-            }
-            set
-            {
-                SetProperty(ref imageSource, value);
-            }
+            if (useCamera) return await TakePicture();
+            else return await SelectImageFromPicker();
         }
+        #endregion Page Functions
 
 
         public void SaveBBQRecipe()
         {
-            CurrentBBQRecipe.Id = id;
-            CurrentBBQRecipe.Name = name;
-            CurrentBBQRecipe.ShortDesc = shortDesc;
-            CurrentBBQRecipe.Ingredients= ingredients;
-            CurrentBBQRecipe.Directions = directions;
-            CurrentBBQRecipe.PrepTime = prepTime;
-            CurrentBBQRecipe.TotalTime = totalTime;
-            CurrentBBQRecipe.Serves = serves;
-            CurrentBBQRecipe.ImageSource = imageSource;
 
-
-            if (id == 0)
+            if (App.MainViewModel.SelectedBBQRecipe.IsChanged)
             {
-                App.MainViewModel.BBQRepo.Add(CurrentBBQRecipe);
-                App.MainViewModel.IsDataLoaded = false;
-            }
-            else
-            {
-                App.MainViewModel.BBQRepo.Update(CurrentBBQRecipe);
+                App.MainViewModel.BBQRepo.Update(App.MainViewModel.SelectedBBQRecipe);
+                ShowMessage("Record has been saved");
             }
         }
 
         public void DeleteBBQRecipe()
         {
 
-            if (id > 0)
+            if (!String.IsNullOrEmpty(App.MainViewModel.SelectedBBQRecipe.Id))
             {
-                App.MainViewModel.BBQRepo.Remove(this.id);
-
-                Id = 0;
-                Name = "";
-                ShortDesc = "";
-                Ingredients ="";
-                Directions = "";
-                PrepTime = 0;
-                TotalTime = 0;
-                Serves = 0;
-                ImageSource = "";
-
-                App.MainViewModel.IsDataLoaded = false;
+                App.MainViewModel.BBQRepo.Remove(App.MainViewModel.SelectedBBQRecipe.Id);
+                ShowMessage("Record has been deleted", true);
 
             }
-           
+
         }
 
         public void ShareBBQRecipe()
         {
 
-            if (id > 0)
+            if (!String.IsNullOrEmpty(App.MainViewModel.SelectedBBQRecipe.Id))
             {
                 DataTransferManager.ShowShareUI();
 
@@ -228,14 +142,21 @@ namespace HowToBBQ.Win10.ViewModels
 
         }
 
+        private async Task ShowMessage(string message, bool goBack=false)
+        {
+            var messageDialog = new MessageDialog(message);
+
+            await messageDialog.ShowAsync();
+            if (goBack) App.MainViewModel.navigationService.Navigate(typeof(Shell));
+        }
 
         private async void DataTransferManager_DataRequested(DataTransferManager sender, DataRequestedEventArgs args)
         {
             DataRequestDeferral deferral = args.Request.GetDeferral();
-            args.Request.Data.Properties.Title = Name;
-            args.Request.Data.SetText(shortDesc);
-            var uri = new Uri(imageSource, UriKind.Absolute);
-            StorageFile storageFile = await Windows.Storage.StorageFile.GetFileFromApplicationUriAsync(uri);
+            args.Request.Data.Properties.Title = App.MainViewModel.SelectedBBQRecipe.Name;
+            args.Request.Data.SetText(App.MainViewModel.SelectedBBQRecipe.ShortDesc);
+
+            StorageFile storageFile = await Windows.Storage.StorageFile.GetFileFromApplicationUriAsync(App.MainViewModel.SelectedBBQRecipe.ImageUri);
 
             args.Request.Data.SetBitmap(RandomAccessStreamReference.CreateFromFile(storageFile));
             deferral.Complete();

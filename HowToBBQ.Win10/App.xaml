@@ -6,9 +6,21 @@
     RequestedTheme="Dark">
 
     <Application.Resources>
+        <Color x:Key="MenuTitleColorBlue" >#1470CC</Color>
         <SolidColorBrush  x:Key="JustOneShadeOfGray" 
                         Color="LightSlateGray" />
-     
+        <SolidColorBrush  x:Key="DarkerShadeOfGray" 
+                        Color="#3D5E7F" />
+        <SolidColorBrush  x:Key="MenuTitleBrushBlue" 
+                        Color="#198CFF" />
+        <SolidColorBrush  x:Key="AppTitleBarBlue" 
+                        Color="#1470CC" />
+        <SolidColorBrush  x:Key="SlightLighterBlue" 
+                        Color="#007FFF" />
+        <SolidColorBrush  x:Key="DarkerShadeOfOrange" 
+                        Color="#B27000" />
+        <SolidColorBrush  x:Key="LightShadeOfOrange" 
+                        Color="#FFA000" />
     </Application.Resources>
 
 

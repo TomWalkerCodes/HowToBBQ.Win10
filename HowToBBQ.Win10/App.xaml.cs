@@ -15,8 +15,10 @@ using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 using GalaSoft.MvvmLight.Ioc;
-using HowToBBQ.Win10.Mvvm;
 using HowToBBQ.Win10.ViewModels;
+using HowToBBQ.Win10.Common;
+using Windows.UI.ViewManagement;
+using Windows.UI;
 
 namespace HowToBBQ.Win10
 {
@@ -48,7 +50,7 @@ namespace HowToBBQ.Win10
         /// <param name="e">Details about the launch request and process.</param>
         protected override void OnLaunched(LaunchActivatedEventArgs e)
         {
-
+            SetTitleTheme(this);
 #if DEBUG
             if (System.Diagnostics.Debugger.IsAttached)
             {
@@ -66,7 +68,7 @@ namespace HowToBBQ.Win10
                 rootFrame = new Frame();
 
                 SimpleIoc.Default.Register<INavigationService>(() => { return new NavigationService(rootFrame); });
-
+                rootFrame.Navigated += RootFrame_Navigated;
                 rootFrame.NavigationFailed += OnNavigationFailed;
 
                 if (e.PreviousExecutionState == ApplicationExecutionState.Terminated)
@@ -80,7 +82,6 @@ namespace HowToBBQ.Win10
                 MainViewModel = new MainViewModel();
                 MainViewModel.IsDataLoaded = false;
             }
-
             if (rootFrame.Content == null)
             {
                 // When the navigation stack isn't restored navigate to the first page,
@@ -88,8 +89,16 @@ namespace HowToBBQ.Win10
                 // parameter
                 rootFrame.Navigate(typeof(Shell), e.Arguments);
             }
+
+
             // Ensure the current window is active
             Window.Current.Activate();
+
+        }
+
+        private void RootFrame_Navigated(object sender, NavigationEventArgs e)
+        {
+            SetTitleTheme(this);
         }
 
         /// <summary>
@@ -114,6 +123,15 @@ namespace HowToBBQ.Win10
             var deferral = e.SuspendingOperation.GetDeferral();
             //TODO: Save application state and stop any background activity
             deferral.Complete();
+        }
+
+        public static void SetTitleTheme(Application instance)
+        {
+            ApplicationViewTitleBar titleBar = ApplicationView.GetForCurrentView().TitleBar;
+            titleBar.BackgroundColor = (Color)instance.Resources["MenuTitleColorBlue"];
+            titleBar.ForegroundColor = Colors.GhostWhite;
+            titleBar.ButtonBackgroundColor = (Color)instance.Resources["MenuTitleColorBlue"];
+            titleBar.ButtonForegroundColor = Colors.GhostWhite;
         }
     }
 }

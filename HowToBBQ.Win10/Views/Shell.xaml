@@ -17,18 +17,26 @@
                    CompactPaneLength="40"
                    OpenPaneLength="150"
                    PaneBackground="{StaticResource JustOneShadeOfGray}"
-                   DisplayMode="Overlay">
-            <SplitView.Pane>
+                   DisplayMode="CompactOverlay">
+            <SplitView.Pane >
                 <Grid x:Name="SplitViewPane"
                       VerticalAlignment="Stretch"
                       HorizontalAlignment="Stretch"
                       ManipulationMode="TranslateX"
                       ManipulationCompleted="SplitViewPane_ManipulationCompleted"
                       Background="{StaticResource JustOneShadeOfGray}">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="40"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <StackPanel Grid.Row="0" Background="{StaticResource MenuTitleBrushBlue}">
+
+                    </StackPanel>
+
                     <ListView ItemsSource="{Binding Menu}"
                               SelectionChanged="Menu_SelectionChanged"
                               Margin="0 48 0 0"
-                              VerticalAlignment="Top">
+                              VerticalAlignment="Top" Grid.Row="1">
                         <ListView.ItemTemplate>
                             <DataTemplate>
                                 <StackPanel Orientation="Horizontal">
@@ -52,7 +60,9 @@
                              Margin="4"
                              HorizontalAlignment="Left"
                              VerticalAlignment="Bottom"
-                             Width="142">
+                             Width="142"
+                             Grid.Row="1"
+                             Visibility="Collapsed">
                         <Canvas Height="80"
                                 Width="200"
                                 Background="Transparent">
@@ -88,6 +98,7 @@
                             </Grid>
                         </Canvas>
                     </Viewbox>
+
                 </Grid>
             </SplitView.Pane>
             <SplitView.Content>
@@ -124,7 +135,7 @@
                 Content="&#xE700;"
                 Width="40"
                 Height="40"
-                Background="Transparent"
+                Background="{StaticResource MenuTitleBrushBlue}"
                 Foreground="White"
                 VerticalAlignment="Top"
                 BorderThickness="0"

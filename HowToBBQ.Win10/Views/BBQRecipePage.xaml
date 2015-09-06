@@ -34,6 +34,7 @@
                         <Setter Target="DetailstackPanel.(RelativePanel.RightOf)" Value="ImageStackPanel"/>
                         <Setter Target="DetailstackPanel.(RelativePanel.AlignBottomWith)" Value="ImageStackPanel" />
                         <Setter Target="DetailstackPanel.Margin" Value="50,0,0,0"/>
+
                     </VisualState.Setters>
                 </VisualState>
                 <VisualState x:Name="MediumState">
@@ -45,7 +46,7 @@
                         <Setter Target="BBQImage.Width" Value="300" />
                         <Setter Target="PageTitle.Style" Value="{StaticResource SubtitleTextBlockStyle}" />
                         <Setter Target="DetailstackPanel.(RelativePanel.Below)" Value="ImageStackPanel" />
-                       <Setter Target="DetailstackPanel.Margin" Value="0,0,0,0"/>
+                        <Setter Target="DetailstackPanel.Margin" Value="0,0,0,0"/>
                     </VisualState.Setters>
                 </VisualState>
             </VisualStateGroup>
@@ -56,35 +57,39 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <Grid Grid.Row="1" x:Name="BBQRecipeGridView" Grid.RowSpan="2" Margin="46,0,50,0">
+        <Grid Grid.Row="1" x:Name="BBQRecipeGridView" Grid.RowSpan="2" Margin="46,0,50,0" DataContext="{Binding SelectedBBQRecipe}">
             <ScrollViewer>
                 <RelativePanel>
                     <StackPanel x:Name="ImageStackPanel"  Orientation="Vertical" HorizontalAlignment="Left">
-                        <Image x:Name="BBQImage" Source="{Binding ImageSource, Mode=TwoWay}" Stretch="UniformToFill" />
-                        <StackPanel Margin="0,20,0,0" Orientation="Horizontal" HorizontalAlignment="Center">
-                            <Button Margin="10" x:Name="ButtonFilePick" Content="Select Image" FontSize="32" Click="ButtonFilePick_Click">
-                                <Button.Background>
-                                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                                        <GradientStop Color="#FFDC9743" Offset="0.171"/>
-                                        <GradientStop Color="#FF0A0A0A"/>
-                                        <GradientStop Color="#FF0A0A0A" Offset="0.98"/>
-                                        <GradientStop Color="#FFDC9743" Offset="0.949"/>
-                                    </LinearGradientBrush>
-                                </Button.Background>
-                            </Button>
-                            <Button Margin="10" x:Name="ButtonCamera" Content="Camera" FontSize="32" Click="ButtonCamera_Click">
-                                <Button.Background>
-                                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                                        <GradientStop Color="#FF4293CE" Offset="0.171"/>
-                                        <GradientStop Color="#FF0A0A0A"/>
-                                        <GradientStop Color="#FF0A0A0A" Offset="0.98"/>
-                                        <GradientStop Color="#FF4293CE" Offset="0.949"/>
-                                    </LinearGradientBrush>
-                                </Button.Background>
-                            </Button>
-                        </StackPanel>
-                    </StackPanel>
+                        <Image x:Name="BBQImage" Source="{Binding ImageUri}" Stretch="UniformToFill" />
+                                <StackPanel Margin="0,20,0,0" Orientation="Horizontal" HorizontalAlignment="Center">
+                                    <Button Margin="10" x:Name="ButtonFilePick" Content="Select Image" FontSize="32" Click="ButtonFilePick_Click">
+                                        <Button.Background>
+                                            <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                                <GradientStop Color="#FFDC9743" Offset="0.171"/>
+                                                <GradientStop Color="#FF0A0A0A"/>
+                                                <GradientStop Color="#FF0A0A0A" Offset="0.98"/>
+                                                <GradientStop Color="#FFDC9743" Offset="0.949"/>
+                                            </LinearGradientBrush>
+                                        </Button.Background>
+                                    </Button>
+                                    <Button Margin="10" x:Name="ButtonCamera" Content="Camera" FontSize="32" Click="ButtonCamera_Click">
+                                        <Button.Background>
+                                            <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                                <GradientStop Color="#FF4293CE" Offset="0.171"/>
+                                                <GradientStop Color="#FF0A0A0A"/>
+                                                <GradientStop Color="#FF0A0A0A" Offset="0.98"/>
+                                                <GradientStop Color="#FF4293CE" Offset="0.949"/>
+                                            </LinearGradientBrush>
+                                        </Button.Background>
+                                    </Button>
+                                </StackPanel>
+                            </StackPanel>
                     <StackPanel x:Name="DetailstackPanel" Orientation="Vertical" HorizontalAlignment="Left">
+                        <StackPanel Margin="0,20,20,10">
+                            <TextBlock Text="ImageUri" FontSize="14"/>
+                            <TextBox  Text="{Binding ImagePath}"/>
+                        </StackPanel>
                         <StackPanel Margin="0,20,20,10">
                             <TextBlock Text="Name" FontSize="14"/>
                             <TextBox x:Name="TextBoxTitle" Text="{Binding Name, Mode=TwoWay}"/>
@@ -109,8 +114,8 @@
                             <TextBlock Text="Directions" FontSize="14"/>
                             <TextBox Text="{Binding Directions, Mode=TwoWay}" Height="150" TextWrapping="Wrap"/>
                         </StackPanel>
-                        <StackPanel Margin="0,0,20,10" Orientation="Horizontal" Padding="10" HorizontalAlignment="Center">
-                            <Button  Margin="10" x:Name="ButtonSave" Content="Save" FontSize="32" Command="{Binding SaveCommand}">
+                        <StackPanel Margin="0,0,20,10" Orientation="Horizontal" Padding="10" HorizontalAlignment="Center" x:Name="ButtonPanel">
+                            <Button  Margin="10" x:Name="ButtonSave" Content="Save" FontSize="32" Command="{Binding  SaveCommand}">
                                 <Button.Background>
                                     <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
                                         <GradientStop Color="#FF6ACD18" Offset="0.171"/>

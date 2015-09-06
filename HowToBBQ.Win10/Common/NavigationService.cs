@@ -2,7 +2,7 @@
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
 
-namespace HowToBBQ.Win10.Mvvm
+namespace HowToBBQ.Win10.Common
 {
     public class NavigationService : INavigationService
     {

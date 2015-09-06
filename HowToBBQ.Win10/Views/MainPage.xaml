@@ -7,10 +7,14 @@
     xmlns:core="using:Microsoft.Xaml.Interactions.Core"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:UI="using:Microsoft.Advertising.WinRT.UI"
     mc:Ignorable="d">
 
-    <Grid>
-
+    <Grid Background="{StaticResource DarkerShadeOfGray}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
         <VisualStateManager.VisualStateGroups>
             <VisualStateGroup x:Name="WindowStates">
                 <VisualState x:Name="NarrowState">
@@ -43,7 +47,7 @@
             </VisualStateGroup>
         </VisualStateManager.VisualStateGroups>
         
-        <GridView x:Name="RecipesGridView" ItemsSource="{Binding Recipes}" SelectionMode="Single" IsItemClickEnabled="True" Margin="40,20,30,0" HorizontalAlignment="Right">
+        <GridView x:Name="RecipesGridView" Grid.Row="1" ItemsSource="{Binding Recipes}" SelectionMode="Single" IsItemClickEnabled="True" Margin="40,20,30,0" HorizontalAlignment="Right">
             <interactivity:Interaction.Behaviors>
                 <core:EventTriggerBehavior EventName="ItemClick">
                     <core:CallMethodAction MethodName="BBQRecipeTapped"
@@ -60,7 +64,7 @@
             <GridView.ItemTemplate>
                 <DataTemplate>
                     <Grid>
-                        <Image Source="{Binding ImageSource}"/>
+                        <Image Source="{Binding ImagePath}"/>
                         <Border Background="#99000000" VerticalAlignment="Bottom">
                             <TextBlock Grid.Column="1" Text="{Binding Name}"
                                    FontSize="30" Margin="10" VerticalAlignment="Center"/>
@@ -70,6 +74,7 @@
             </GridView.ItemTemplate>
         </GridView>
         <ListView x:Name="RecipesListView" 
+                  Grid.Row="1"
                   ItemsSource="{Binding Recipes}" 
                   SelectionMode="Single" 
                   IsItemClickEnabled="True" 
@@ -92,7 +97,7 @@
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <Grid>
-                        <Image Source="{Binding ImageSource}"/>
+                        <Image Source="{Binding ImagePath}"/>
                         <Border Background="#99000000" VerticalAlignment="Bottom">
                             <TextBlock Grid.Column="1" Text="{Binding Name}"
                 				FontSize="15" Margin="10" VerticalAlignment="Center"/>
@@ -101,5 +106,13 @@
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>
+        <!--<UI:AdControl ApplicationId="d25517cb-12d4-4699-8bdc-52040c712cab" 
+                      AdUnitId="10043123" 
+                      HorizontalAlignment="Center" 
+                      Height="90" 
+                      VerticalAlignment="Top" 
+                      Width="728"
+                      Grid.Row="0"
+                      Margin="10"/>-->
     </Grid>
 </Page>
